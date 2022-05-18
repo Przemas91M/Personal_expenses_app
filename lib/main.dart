@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:personal_expenses_app/transaction.dart';
+import 'package:personal_expenses_app/models/new_transaction.dart';
+
+import '../models/transaction.dart';
+import '../widgets/transaction_list.dart';
+import 'models/user_transactions.dart';
 
 void main() {
   runApp(ExpensesApp());
@@ -23,6 +26,10 @@ class ExpensesApp extends StatelessWidget {
       date: DateTime.now(),
     ),
   ];
+
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,71 +37,25 @@ class ExpensesApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Personal Expenses app'),
+          backgroundColor: Colors.teal,
         ),
-        body: Column(
-          children: <Widget>[
-            Card(
-              elevation: 10,
-              child: Container(
-                width: 100,
-                height: 100,
-                child: const Text('CHART!'),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Card(
+                elevation: 10,
+                child: Container(
+                  width: 100,
+                  // height: 100,
+                  child: const Text('CHART!'),
+                ),
               ),
-            ),
-            Column(
-              children: [
-                ...transactions.map((tx) {
-                  return Card(
-                      child: Row(
-                    children: [
-                      Container(
-                          padding: const EdgeInsets.all(20),
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.teal, width: 2.0),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Text(
-                            '${tx.amount} zł',
-                            style: const TextStyle(
-                                color: Colors.teal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          )),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            tx.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            DateFormat('MMMM dd,').format(tx.date) +
-                                ' ' +
-                                DateFormat.Hm().format(tx.date),
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ));
-                }).toList()
-              ],
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.all(10),
+                child: UserTransactions(),
+              ),
+            ],
+          ),
         ),
       ),
     );
